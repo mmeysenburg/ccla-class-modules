@@ -16,7 +16,7 @@ comments: false
 
 [Searching and sorting code](../assets/code/bucket-sort-single/search-n-sort.zip)
 
-In this assignment, you will implement a sorting algorithm that can sort faster than the general O(n lg n) speed limit normally associated with sorting algorithms. Here, we will take advantage of specific characteristics of the data in order to improve performance, with a *Bucket Sort* algorithm. We assume that we are sorting floating point numbers in the half-open range [0, 1\right), and use a probably counterintuitive algorithm to break the speed limit.
+In this assignment, you will implement a sorting algorithm that can sort faster than the general O(n lg n) speed limit normally associated with sorting algorithms. Here, we will take advantage of specific characteristics of the data in order to improve performance, with a *Bucket Sort* algorithm. We assume that we are sorting floating point numbers in the half-open range [0, 1), and use a probably counterintuitive algorithm to break the speed limit.
 
 Here is an example. Suppose we are sorting an array containing 20 floating point numbers, like this:
 
