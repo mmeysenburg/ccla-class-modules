@@ -16,7 +16,7 @@ comments: false
 
 [Searching and sorting code](../assets/code/bucket-sort-single/search-n-sort.zip)
 
-In this assignment, you will implement a sorting algorithm that can sort faster than the general $O\left(n \lg n\right)$ speed limit normally associated with sorting algorithms. Here, we will take advantage of specific characteristics of the data in order to improve performance, with a *Bucket Sort* algorithm. We assume that we are sorting floating point numbers in the half-open range $\left[0, 1\right)$, and use a probably counterintuitive algorithm to break the speed limit.
+In this assignment, you will implement a sorting algorithm that can sort faster than the general O(n lg n) speed limit normally associated with sorting algorithms. Here, we will take advantage of specific characteristics of the data in order to improve performance, with a *Bucket Sort* algorithm. We assume that we are sorting floating point numbers in the half-open range [0, 1\right), and use a probably counterintuitive algorithm to break the speed limit.
 
 Here is an example. Suppose we are sorting an array containing 20 floating point numbers, like this:
 
@@ -24,13 +24,13 @@ Here is an example. Suppose we are sorting an array containing 20 floating point
 [0.07, 0.90, 0.88, 0.45, 0.92, 0.13, 0.45, 0.61, 0.67, 0.87, 0.04, 0.23, 0.49, 0.08, 0.74, 0.76, 0.58, 0.63, 0.32, 0.75]
 ```
 
-We will distribute these values into 10 "buckets", which are smaller arrays or lists. Bucket zero holds values in $\left[0, 0.1\right)$, bucket one holds values in $\left[0.1, 0.2\right)$, bucket two holds values in $\left[0.2, 3\right)$, and so on. For this data, our buckets would look like this:
+We will distribute these values into 10 "buckets", which are smaller arrays or lists. Bucket zero holds values in [0, 0.1), bucket one holds values in [0.1, 0.2), bucket two holds values in [0.2, 3), and so on. For this data, our buckets would look like this:
 
 ![Bucket Sort diagram](https://i.imgur.com/7kLfq3T.png)
 
 Once the values have been distributed, we use an efficient sorting algorithm to sort the values in each bucket. Then, we copy all of the values from bucket zero into the original array, followed by all the values from bucket one, then all the values from bucket two, and so on.
 
-The time complexity of bucket sort is $O\left(n + k\right)$, where $n$ is the size of the array, and $k$ is the number of buckets.
+The time complexity of bucket sort is O(n + k), where n is the size of the array, and k is the number of buckets.
 
 The code for this module has three files to get you started: `BucketSort.h`, `main.cpp`, and a Bash `makefile`. Follow the `TODO` instructions in `BucketSort.h` to complete the bucket sort algorithm. Once you have successfully implemented the sort, assuming you are in a Bash environment, execute the program with a command like this:
 
@@ -38,7 +38,7 @@ The code for this module has three files to get you started: `BucketSort.h`, `ma
 ./bucketSort 24
 ```
 
-The program in `main.cpp` will run your bucket sort and our quicksort algorithm for multiple tries, on arrays ranging in size from 256 to $2^n$, where $n$ is the command-line parameter. The command shown caps the array size at $2^{24} = 16,777,216$. Your output should look something like this:
+The program in `main.cpp` will run your bucket sort and our quicksort algorithm for multiple tries, on arrays ranging in size from 256 to 2<sup>n</sup>, where n is the command-line parameter. The command shown caps the array size at 2<sup>24</sup> = 16,777,216. Your output should look something like this:
 
 ```
       n,          bs,          qs
