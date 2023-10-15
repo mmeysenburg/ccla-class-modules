@@ -10,7 +10,7 @@
 ############################
 
 # Name of website
-title: Doane CCLA Machine Learning Workshop
+title: Doane CCLA Course Modules Repository
 
 # Your name to show in the footer
 author: Mark M. Meysenburg
@@ -73,7 +73,7 @@ social-network-links:
 
 # If you want your website to generate an RSS feed, provide a description
 # The URL for the feed will be https://<your_website>/feed.xml
-rss-description: This site hosts the Doane CCLA Machine Learning (ML) workshop
+rss-description: This site hosts Doane CCLA Course Modules
 
 ###########################
 # --- General options --- #
@@ -111,7 +111,7 @@ post_search: true
 navbar-var-length: false
 
 # The keywords to associate with your website, for SEO purposes
-keywords: "machine learning,python,Doane Computing"
+keywords: "high performance computing,computer vision,openmpi,python,c++,Doane Computing"
 
 ######################################
 # --- Colours / background image --- #
