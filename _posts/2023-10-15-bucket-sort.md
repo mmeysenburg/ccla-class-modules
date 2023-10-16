@@ -107,9 +107,12 @@ In this assignment, we will parallelize our bucket sort algorithm from the sorti
 
 Your parallel program should work like this:
 
-Processor 0 is the root processor. It creates an array of 10,000,000 doubles in the half-closed range [0, 1), and divides them into five buckets (versus 10 from the previous sorting assignment). Then, the root processor sends the data from the five buckets to five sub-processors.
-Processors 1 through 5, the subprocesses, each receive one bucket and place the values in a local array. Then, the subprocess sorts the local array, using an efficient sorting procedure. Finally, each subprocessor sends its local array back to the root processor.
-Processor 0 receives the sorted arrays from the subprocessors, and appends them together back into the original array. The result should be a sorted version of the original array.
+1. Processor 0 is the root processor. It creates an array of 10,000,000 doubles in the half-closed range [0, 1), and divides them into five buckets (versus 10 from the previous sorting assignment). Then, the root processor sends the data from the five buckets to five sub-processors.
+
+2. Processors 1 through 5, the subprocesses, each receive one bucket and place the values in a local array. Then, the subprocess sorts the local array, using an efficient sorting procedure. Finally, each subprocessor sends its local array back to the root processor.
+
+3. Processor 0 receives the sorted arrays from the subprocessors, and appends them together back into the original array. The result should be a sorted version of the original array.
+
 
 In the module's code repository, you will find the directory `5-assignment`. Inside the directory, you'll find these files:
 
