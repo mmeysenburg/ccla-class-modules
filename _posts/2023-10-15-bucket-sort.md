@@ -6,17 +6,31 @@ tags: [OpenMPI,C++]
 comments: false
 ---
 
-**Note**: in our C++ Data Structures and Algorithms course, we had two Bucket Sort assignments. The first was assigned in the searching and sorting module as a single-processor program. The second assignment was in the parallelism module and used OpenMPI on a Slurm-managed Linux cluster. Both assignments are presented below.
+This page describes an OpenMPI module we included in our C++ Data Structures and Algorithms course. At Doane, our computing majors on the software engineering track take a three-course series of programming courses:
+
+1. CMP 145 Introduction to Programming and Problem-Solving, using Python,
+2. CMP 146 Programming and Problem-Solving II, using Java, and
+3. CMP 246 Data Structures and Algorithms, using C++.
+
+This module is the capstone of the CMP 246 course.
+
+In the course, we have two Bucket Sort assignments. The first is assigned in the searching and sorting module as a single-processor program. The second assignment is in the parallelism module and uses OpenMPI on a Slurm-managed Linux cluster. Both assignments are presented below, along with the slides and source code for the module.
 
 ---
 
 ## First assignment: uni-processor bucket sort
 
+### Module materials
+
+Here are the slides and sample code used in the CMP 246 searching and sorting module. 
+
 [Searching and sorting slides](../assets/slides/searching-and-sorting.pptx)
 
 [Searching and sorting code](../assets/code/bucket-sort-single/search-n-sort.zip)
 
-In this assignment, you will implement a sorting algorithm that can sort faster than the general O(n lg n) speed limit normally associated with sorting algorithms. Here, we will take advantage of specific characteristics of the data in order to improve performance, with a *Bucket Sort* algorithm. We assume that we are sorting floating point numbers in the half-open range [0, 1), and use a probably counterintuitive algorithm to break the speed limit.
+### Assignment: bucket sort
+
+In this assignment, you will implement a sorting algorithm that can sort faster than the general O(n lg n) speed limit normally associated with sorting algorithms. Here, we will take advantage of specific characteristics of the data in order to improve performance, with a *Bucket Sort* algorithm. We assume that we are sorting floating point numbers in the half-open range [0, 1\right), and use a probably counterintuitive algorithm to break the speed limit.
 
 Here is an example. Suppose we are sorting an array containing 20 floating point numbers, like this:
 
@@ -28,11 +42,11 @@ We will distribute these values into 10 "buckets", which are smaller arrays or l
 
 ![Bucket Sort diagram](https://i.imgur.com/7kLfq3T.png)
 
-Once the values have been distributed, we use an efficient sorting algorithm to sort the values in each bucket. Then, we copy all of the values from bucket zero into the original array, followed by all the values from bucket one, then all the values from bucket two, and so on.
+Once the values have been distributed, we use an efficient sorting algorithm (such as quicksort) to sort the values in each bucket. Then, we copy all of the values from bucket zero into the original array, followed by all the values from bucket one, then all the values from bucket two, and so on.
 
 The time complexity of bucket sort is O(n + k), where n is the size of the array, and k is the number of buckets.
 
-The code for this module has three files to get you started: `BucketSort.h`, `main.cpp`, and a Bash `makefile`. Follow the `TODO` instructions in `BucketSort.h` to complete the bucket sort algorithm. Once you have successfully implemented the sort, assuming you are in a Bash environment, execute the program with a command like this:
+The code for this module has three files to get you started, in the `2-Assignment` directory: `BucketSort.h`, `main.cpp`, and a Bash `makefile`. Follow the `TODO` instructions in `BucketSort.h` to complete the bucket sort algorithm. Once you have successfully implemented the sort, assuming you are in a Bash environment, execute the program with a command like this:
 
 ```
 ./bucketSort 24
@@ -62,3 +76,45 @@ The program in `main.cpp` will run your bucket sort and our quicksort algorithm 
 ```
 
 In particular, your bucket sort column should show that your algorithm is faster than the quicksort!
+
+---
+
+## Parallelism module and second assignment
+
+### Module introduction
+
+In this module, we will introduce parallel computing, and look at several parallel programming examples using the OpenMPI system. You can run the code in Replit, on Doane's supercomputer, Onyx, on your own Linux machine, or in a Windows Subsystem for Linux on your PC. 
+
+### Module materials 
+
+Here are the materials for the module:
+
+[OpenMPI slides, part 1](../assets/slides/openmpi-1.pptx)
+
+[OpenMPI slides, part 2](../assets/slides/openmpi-2.pptx)
+
+[OpenMPI slides, part 3](../assets/slides/openmpi-3.pptx)
+
+[OpenMPI slides, part 4](../assets/slides/openmpi-4.pptx)
+
+[Module source code](../assets/code/parallel-module/parallel-module.zip)
+
+### Module assignment: parallel bucket sort
+
+In this assignment, we will parallelize our bucket sort algorithm from the sorting module assignment. We will use six processors, like this:
+
+![Parallel bucket sort processors](https://i.imgur.com/xUCbbJi.png)
+
+Your parallel program should work like this:
+
+Processor 0 is the root processor. It creates an array of 10,000,000 doubles in the half-closed range [0, 1), and divides them into five buckets (versus 10 from the previous sorting assignment). Then, the root processor sends the data from the five buckets to five sub-processors.
+Processors 1 through 5, the subprocesses, each receive one bucket and place the values in a local array. Then, the subprocess sorts the local array, using an efficient sorting procedure. Finally, each subprocessor sends its local array back to the root processor.
+Processor 0 receives the sorted arrays from the subprocessors, and appends them together back into the original array. The result should be a sorted version of the original array.
+
+In the module's code repository, you will find the directory `5-assignment`. Inside the directory, you'll find these files:
+
+`PA10.cpp` : Skeleton code for the parallelized bucket sort. Search for `TODO` in this file and complete the program.
+`makefile` : MPI build instructions, executed via the `make` command.
+`buckets.job` : SLURM batch job to run the code on a Linux cluster.
+
+
