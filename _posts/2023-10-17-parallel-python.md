@@ -90,7 +90,6 @@ We are interested in the case where *d ≤ 1*. Squaring both sides of that inequ
 
 Here is a Python function to implement our Monte Carlo method of estimating *π*. 
 
-```python
 {% highlight python linenos %}
 def monte_pi(n):
     '''
@@ -115,7 +114,7 @@ def monte_pi(n):
             num_in += 1
     
     return 4.0 * num_in / n
-```
+{% endhighlight %}
 
 We use the `for` statement to throw our darts, and the `random.random()` method to get the *(x, y)* value for each dart. Then, we use our simplified distance formula to determine if each dart landed inside the circle quadrant. We use an accumulator pattern to keep track of how many darts landed inside the quadrant. Finally, we return four times our area estimate as our estimate of *π*. 
 
@@ -149,7 +148,6 @@ Each processor in the communicator group will be running the same program. So, w
 
 Generally speaking, a Python program using OpenMPI might look like this:
 
-```python
 {% highlight python linenos %}
 # we need this import to use MPI in our Python code
 from mpi4py import MPI 
@@ -169,8 +167,7 @@ else:
     ###########################################################################
     # drone processor section                                                 #
     ###########################################################################
-
-```
+{% endhighlight %}
 
 In this template, the statements the root processor should execute go in the root processor section, while the statements the drone processors should use go in the drone processor section.
 
@@ -194,7 +191,6 @@ Given the template above, and what we know about sending and receiving messages,
 
 Here's the program to implement this strategy:
 
-```python
 {% highlight python linenos %}
 import datetime
 import random
@@ -312,7 +308,7 @@ else:
     comm.send(count, dest = 0, tag = COUNT_FROM_DRONE)
 
     # and that's it! Drone process is complete
-```
+{% endhighlight %}
 
 We have modified our Monte Carlo function to just count and return the number of darts that land on the unit circle quadrant. The drone process code calls the function and sends the results back to the root process with the `send()` method. The root process uses a `for` loop to receive counts from each of the drones with the `recv()` method, accumulates the results, and calculates the estimate of *π*. In the `send()` and `recv()` methods we use a tag value of 1, represented by the variable `COUNT_FROM_DRONE`. The tag field is sort of like the subject field of an email message -- it tells the receiver what the received value is referring to. 
 
