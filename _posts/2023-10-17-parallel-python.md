@@ -135,13 +135,64 @@ One way we can speed up our Monte Carlo simulation is *parallelism*. The previou
 
 ### Introduction to OpenMPI
 
+Note: in the discussion below, we will use the terms *processors* and *processes* interchangeably, to refer to a single CPU.
+
 The *Message Passing Interface (MPI)* is a standard way to use parallelism, especially on cluster computers. Here we will use an open source implementation of MPI, OpenMPI. 
 
 The key concept in MPI is *message passing*. That is, all of the different processors we have working on our problem will communicate with each other by sending messages back and forth. These messages will be either data (e.g., the number of darts that landed in the circle quadrant) or control information (e.g, here's how many darts you should throw). 
 
-In an MPI program the group of processors working together is called a *communicator group*. Inside the group, each processor is assigned a unique integer number, called its *rank*. The process with rank zero is known as the *root process*; it is responsible for organizing the work that the remaining processors will do. We will call the non-root processes *drones*. 
+In an MPI program the collection of processors working together on a problem is called a *communicator group*. Inside the group, each processor is assigned a unique integer number, called its *rank*. The process with rank zero is known as the *root process*; it is responsible for organizing the work that the remaining processors will do. We will call the non-root processes *drones*. The drones do the work while the root controls the algorithm.
 
 Each processor in the communicator group will be running the same program. So, we will use logic (an `if` / `else` statement) to separate the code the root process should execute from the code the drone processes should use. 
+
+### Template Python OpenMPI program
+
+Generally speaking, a Python program using OpenMPI might look like this:
+
+```python
+{% highlight python linenos %}
+# we need this import to use MPI in our Python code
+from mpi4py import MPI 
+
+# get the communications object
+comm = MPI.COMM_WORLD
+
+# get rank of current processor
+rank = comm.Get_rank()
+
+if rank == 0:
+    ###########################################################################
+    # root processor section                                                  #
+    ###########################################################################
+
+else:
+    ###########################################################################
+    # drone processor section                                                 #
+    ###########################################################################
+
+```
+
+In this template, the statements the root processor should execute go in the root processor section, while the statements the drone processors should use go in the drone processor section.
+
+Messages are passed back and forth between processes in an MPI program using the `send()` and `recv()` methods of the `MPI.COMM_WORLD` object. The way we will use it, the `send()` method takes three parameters:
+
+- first, the object we want to send, then,
+- second, the `dest` parameter, which specifies the rank of the process the message should go to, and finally
+- third, a `tag` parameter, which is a number used to identify the type of message this is. 
+
+The `recv()` method is simpler; it takes two parameters:
+
+- first, the `source` parameter, which identifies the rank of the process we are looking to receive a message from, and
+- second, a `tag` parameter, which is a number used to identify the type of message we expect to receive.
+
+### Parallelized Monte Carlo method
+
+Given the template above, and what we know about sending and receiving messages, we can now put together an OpenMPI program in Python for estimating the value of *π* with a Monte Carlo method. The strategy will be this:
+
+- the drone processes will *each* throw 10,000,000 darts at their own unit circle quadrant, and will send the number of darts that landed in the quadrant to the root processor, while
+- the root process will collect all of the drone processor's counts, add them all up, and use that result to estimate the value of *π*.
+
+Here's the program to implement this strategy:
 
 ```python
 {% highlight python linenos %}
@@ -263,6 +314,10 @@ else:
     # and that's it! Drone process is complete
 ```
 
+We have modified our Monte Carlo function to just count and return the number of darts that land on the unit circle quadrant. The drone process code calls the function and sends the results back to the root process with the `send()` method. The root process uses a `for` loop to receive counts from each of the drones with the `recv()` method, accumulates the results, and calculates the estimate of *π*. In the `send()` and `recv()` methods we use a tag value of 1, represented by the variable `COUNT_FROM_DRONE`. The tag field is sort of like the subject field of an email message -- it tells the receiver what the received value is referring to. 
+
+We ran our code on the author's desktop computer, which has eight cores. Here are the results:
+
 ```
 8 2 LI231.doane.local
 Drone process 2 count: 7853298
@@ -288,3 +343,18 @@ Received count 7855272 from processor 6
 Received count 7853070 from processor 7
 Estimate of pi: 3.141687
 ```
+
+First, notice that the order of each drone process finishing up is not sequential. In fact, each time we run the program, it's likely that the order will be different! That is an important aspect of parallel programming. Each of the processes is separate, and due to uncontrollable differences in the load from other programs on each processor, we cannot rely on them finishing in any particular order, even if they are all executing the same program!
+
+Our root process does receive the messages passed to in in order, since we put the `recv()` call inside a `for` loop. The root waits for the message from drone one before looking for the message from drone two, and so on. If, say, the message from drone four arrives before the message from drone one, the message from drone four is saved until the root process executes the appropriate `recv()` call.
+
+We can see that we got a workable estimate of *π*, based on throwing a total of 70,000,000 darts. And, the overall process took less time than it would have taken to throw 70,000,000 darts using our first, single-processor program. 
+
+### Running Python OpenMPI on your own PC
+
+You do not have to have access to a Linux cluster computer to use OpenMPI in your Python programs! Here's how you can set up your Windows PC to run MPI in Python, assuming you already have Python installed:
+
+1. Install the [Microsoft MPI Software Development Kit (SDK)](https://learn.microsoft.com/en-us/message-passing-interface/microsoft-mpi), and
+2. Install the `mpi4py` Python module, via the command `pip install mpi4py`.
+
+That's it! You are now ready to run OpenMPI programs in Python on your very own computer!
