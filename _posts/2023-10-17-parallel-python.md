@@ -144,6 +144,7 @@ In an MPI program the group of processors working together is called a *communic
 Each processor in the communicator group will be running the same program. So, we will use logic (an `if` / `else` statement) to separate the code the root process should execute from the code the drone processes should use. 
 
 ```python
+{% highlight python linenos %}
 import datetime
 import random
 
