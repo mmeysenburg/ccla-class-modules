@@ -8,7 +8,7 @@ This site is a repository of course modules for teaching high-performance comput
 
 The current course modules are:
 
-1. [OpenMPI in Python: Estimating π](./2023-10-17-parallel-python/)
+1. OpenMPI in Python: Estimating π
 2. [OpenMPI in C++: Bucket Sort](./2023-10-15-bucket-sort/)
 
 New content will be added periodically, and each new addition will be 
