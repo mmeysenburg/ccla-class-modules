@@ -352,5 +352,10 @@ You do not have to have access to a Linux cluster computer to use OpenMPI in you
 
 1. Install the [Microsoft MPI Software Development Kit (SDK)](https://learn.microsoft.com/en-us/message-passing-interface/microsoft-mpi), and
 2. Install the `mpi4py` Python module, via the command `pip install mpi4py`.
+3. Execute your program (here named `MontePiMPI.py`) from the command line like this: 
+
+```
+mpiexec python MontePiMPI.py
+```
 
 That's it! You are now ready to run OpenMPI programs in Python on your very own computer!
