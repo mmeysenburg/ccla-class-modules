@@ -88,4 +88,46 @@ We are interested in the case where *d ≤ 1*. Squaring both sides of that inequ
 
 ## Python solution, take one
 
+Here is a Python function to implement our Monte Carlo method of estimating *π*. 
+
+```python
+def monte_pi(n):
+    '''
+    Use a Monte Carlo method to estimate the value of π.
+
+    parameters
+    ----------
+    n : integer
+      Number of "darts" to throw at a unit circle quadrant.
+
+    returns
+    -------
+    Estimate of π, as a floating-point number.
+    '''
+    import random
+
+    num_in = 0
+    for i in range(n):
+        x = random.random() # random number in [0, 1)
+        y = random.random()
+        if x * x + y * y <= 1.0:
+            num_in += 1
+    
+    return 4.0 * num_in / n
+```
+
+We use the `for` statement to throw our darts, and the `random.random()` method to get the *(x, y)* value for each dart. Then, we use our simplified distance formula to determine if each dart landed inside the circle quadrant. We use an accumulator pattern to keep track of how many darts landed inside the quadrant. Finally, we return four times our area estimate as our estimate of *π*. 
+
+We called this function for 100, 10,000, and 10,000,000 darts, and as expected, the estimate of *π* gets better as the number of darts increases.
+
+```
+Estimate using 100 darts: 3.040000
+Estimate using 10000 darts: 3.145600
+Estimate using 10000000 darts: 3.141642
+```
+
+There is one problem, however. As the number of darts increases, it takes longer and longer for our code to execute. So, is there a way to speed things up? Well, now that you asked...
+
+## Parallelism with OpenMPI
+
 
