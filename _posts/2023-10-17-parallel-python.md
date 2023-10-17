@@ -91,6 +91,7 @@ We are interested in the case where *d ≤ 1*. Squaring both sides of that inequ
 Here is a Python function to implement our Monte Carlo method of estimating *π*. 
 
 ```python
+{% highlight python linenos %}
 def monte_pi(n):
     '''
     Use a Monte Carlo method to estimate the value of π.
