@@ -10,6 +10,7 @@ The current course modules are:
 
 1. [OpenMPI in Python: Estimating π](./2023-10-17-parallel-python/)
 2. [OpenMPI in C++: Bucket Sort](./2023-10-15-bucket-sort/)
+3. [Salvia and Root Exudate Metabolomics](./2023-11-20-salvia-metabolomics)
 
 New content will be added periodically, and each new addition will be 
 accompanied by a new blog post. 
